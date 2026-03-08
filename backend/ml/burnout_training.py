@@ -42,10 +42,18 @@ def load_burnout_artifacts():
     return scaler, model
 
 
-def predict_burnout_score(workload_hours, stress_level, scaler=None, model=None):
-    """Predict burnout probability. Returns float in [0, 1]. Pass scaler, model from load_burnout_artifacts() or None to load on demand."""
+# Typical working days per week (for converting user input "hours per day" -> "hours per week")
+WORK_DAYS_PER_WEEK = 5
+
+
+def predict_burnout_score(work_hours_per_day, stress_level, scaler=None, model=None):
+    """Predict burnout probability. Returns float in [0, 1].
+    work_hours_per_day: user input, hours worked per (work) day.
+    stress_level: in same scale as training (e.g. 0-10 or 0-1).
+    Pass scaler, model from load_burnout_artifacts() or None to load on demand."""
     scaler, model = load_burnout_artifacts()
-    row = np.array([[workload_hours, stress_level]], dtype=float)
+    work_hours_per_week = work_hours_per_day * WORK_DAYS_PER_WEEK
+    row = np.array([[work_hours_per_week, stress_level]], dtype=float)
     row_scaled = scaler.transform(row)
     return float(model.predict_proba(row_scaled)[0][1])
 
