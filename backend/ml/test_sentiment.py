@@ -4,7 +4,7 @@
 
 from pathlib import Path
 import joblib
-from backend.ml.sentiment_training import preprocess_text
+from sentiment_training import preprocess_text
 
 # Load artifacts (same paths as in training.py)
 MODELS_DIR = Path(__file__).resolve().parent / "models"
@@ -18,7 +18,8 @@ def predict_sentiment(text: str):
     X = vectorizer.transform([cleaned])
     pred = model.predict(X)[0]           # 0 = negative, 1 = positive
     proba = model.predict_proba(X)[0]   # [prob_neg, prob_pos]
-    return pred, proba[1]               # proba[1] = positive score
+    return pred, proba[0]               # proba[0] = negative score
+
 
 
 if __name__ == "__main__":
