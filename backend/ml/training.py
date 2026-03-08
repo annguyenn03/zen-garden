@@ -2,7 +2,6 @@ import pandas as pd
 from zipfile import ZipFile
 import re
 from pathlib import Path
-
 import nltk
 from nltk.corpus import stopwords
 from nltk.stem import WordNetLemmatizer
@@ -35,7 +34,7 @@ def preprocess_text(text):
 zip_path = "data/training.1600000.processed.noemoticon.csv.zip"
 with ZipFile(zip_path) as z:
     with z.open("training.1600000.processed.noemoticon.csv") as f:
-        sen_data = pd.read_csv(f, encoding="latin-1", names=['target', 'id', 'date', 'flag', 'user', 'text'], usecols=['target', 'text']).sample(n=20000)
+        sen_data = pd.read_csv(f, encoding="latin-1", names=['target', 'id', 'date', 'flag', 'user', 'text'], usecols=['target', 'text'])
 
 
 # Preprocessing 1: Apply same cleaning used at inference (regex → lower → lemmatize → drop stopwords)
@@ -55,7 +54,7 @@ X_train = vectorizer.fit_transform(X_train_list)
 X_test = vectorizer.transform(X_test_list)
 
 # Train classifier on training set
-model = LogisticRegression(max_iter=400)
+model = LogisticRegression(max_iter=200, C=1.0, class_weight='balanced', solver='saga')
 model.fit(X_train, y_train)
 
 # Evaluate on held-out test set
