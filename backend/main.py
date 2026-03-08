@@ -93,12 +93,15 @@ def analyze(entry: AnalyzeRequest):
     level = burnout_level_from_risk(final_risk)
     burnout_probability = round(final_risk * 100)
 
-    # Zen suggestion: Gemini or default
+    # Zen suggestion: Gemini or default (when no API key or request fails)
     default_suggestion = (
-        "Connecting error. Please try again"
+        "Take a short break, hydrate, and consider a brief walk or some deep breathing. "
+        "Small resets during the day can lower stress over time."
     )
-    
-    response = client.models.generate_content(
+    zen_suggestions = default_suggestion
+    if client:
+        try:
+            response = client.models.generate_content(
                 model="gemini-2.5-flash",
                 contents=f"""
 You are a calm, supportive wellness assistant that gives short Zen-style suggestions to help people relax and reduce burnout.
@@ -119,11 +122,15 @@ Instructions:
 Output: Return only the relaxation suggestion text.
 """,
             )
-    
+            if response and getattr(response, "text", None):
+                zen_suggestions = response.text.strip()
+        except Exception:
+            pass
+
     return {
         "sentiment_negativity": round(sentiment_negativity, 4),
         "final_risk": round(final_risk, 4),
         "burnout_level": level,
         "burnout_probability": burnout_probability,
-        "zen_suggestions": response.text,
+        "zen_suggestions": zen_suggestions,
     }
