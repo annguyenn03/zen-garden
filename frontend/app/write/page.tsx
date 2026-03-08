@@ -45,8 +45,8 @@ export default function NameEntry() {
   }
 
   return (
-    <motion.div 
-      initial={{ opacity: 0, y: 10 }} 
+    <motion.div
+      initial={{ opacity: 0, y: 10 }}
       animate={{ opacity: 1, y: 0 }}
       className="flex flex-col items-start justify-start pt-20 pl-10"
     >
@@ -56,22 +56,28 @@ export default function NameEntry() {
       </p>
 
       <div className="mt-40 w-full flex flex-col items-center">
-        <input 
-          type="text" 
+        <input
+          type="text"
           value={name}
           onChange={(e) => setName(e.target.value)}
           onKeyPress={handleKeyPress}
           placeholder="type here..."
-          className="bg-transparent border-none text-4xl text-center focus:outline-none w-full placeholder-[#4A4E7E]/20 font-bold"
+          className="bg-transparent border-none text-4xl text-center focus:outline-none w-full placeholder-[#4A4E7E]/20 font-bold text-black"
         />
 
         <div className="w-[500px] h-20 mt-[-20px] pointer-events-none">
-          <Image src="/squiggle_line.svg" width={500} height={80} alt="" className="w-full h-full object-contain" />
+          <Image
+            src="/squiggle_line.svg"
+            width={500}
+            height={80}
+            alt=""
+            className="w-full h-full object-contain"
+          />
         </div>
       </div>
 
       <div className="absolute bottom-10 right-10">
-        <button 
+        <button
           onClick={handleNext}
           disabled={!name.trim()}
           className="bg-[#2D2D2D] text-white px-10 py-3 rounded-2xl text-xl font-bold hover:scale-105 transition-transform disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
