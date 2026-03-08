@@ -51,7 +51,8 @@ def predict_burnout_score(work_hours_per_day, stress_level, scaler=None, model=N
     work_hours_per_day: user input, hours worked per (work) day.
     stress_level: in same scale as training (e.g. 0-10 or 0-1).
     Pass scaler, model from load_burnout_artifacts() or None to load on demand."""
-    scaler, model = load_burnout_artifacts()
+    if scaler is None or model is None:
+        scaler, model = load_burnout_artifacts()
     work_hours_per_week = work_hours_per_day * WORK_DAYS_PER_WEEK
     row = np.array([[work_hours_per_week, stress_level]], dtype=float)
     row_scaled = scaler.transform(row)

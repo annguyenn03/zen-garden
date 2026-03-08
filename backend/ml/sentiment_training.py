@@ -32,6 +32,14 @@ def preprocess_text(text):
     return ' '.join(doc)
 
 
+def get_sentiment_negativity(text: str, vectorizer, model) -> float:
+    """Return negativity score in [0, 1] for inference. Requires pre-loaded vectorizer and model."""
+    cleaned = preprocess_text(text)
+    X = vectorizer.transform([cleaned])
+    proba = model.predict_proba(X)[0]
+    return float(proba[0])
+
+
 def _load_or_build_clean_data():
     """Load preprocessed data from cache if present; else read zip, preprocess, save cache, return."""
     DATA_DIR = Path(__file__).resolve().parent / "data"

@@ -1,6 +1,4 @@
-.backend/venv/
 backend/venv/
-.backend/ml/data/
 backend/ml/data/
 __pycache__/
 *.pyc
