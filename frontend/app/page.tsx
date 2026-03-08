@@ -40,12 +40,12 @@ export default function LandingPage() {
         </div>
 
         <p className="text-2xl md:text-3xl text-[#4A4E7E] font-medium mb-12 leading-snug max-w-sm">
-          take better care of yourself to grow your zen garden
+          learn to take care of yourself day by day
         </p>
 
         <Link href="/garden">
           <button className="bg-[#4A4E7E] text-white text-3xl font-bold px-16 py-5 rounded-[2.5rem] shadow-2xl hover:bg-[#3b3f66] hover:scale-105 active:scale-95 transition-all">
-            begin
+            begin writing
           </button>
         </Link>
       </motion.div>

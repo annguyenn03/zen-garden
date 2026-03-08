@@ -28,10 +28,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <nav className="flex flex-col gap-6 text-white/70 font-bold text-sm">
              <Link href="/dashboard" className="hover:text-white transition-colors">dashboard</Link>
              <Link href="/journal" className="hover:text-white transition-colors">journal</Link>
-             <Link href="/reflection" className="hover:text-white transition-colors text-center leading-tight">daily reflection</Link>
              <Link href="/garden" className="hover:text-white transition-colors">mind garden</Link>
-             <Link href="/insights" className="hover:text-white transition-colors">insights</Link>
-             <Link href="/about" className="hover:text-white transition-colors mt-10">about us</Link>
           </nav>
         </aside>
 
