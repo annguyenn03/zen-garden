@@ -2,3 +2,7 @@
 backend/venv/
 .backend/ml/data/
 backend/ml/data/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
