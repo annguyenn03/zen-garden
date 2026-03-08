@@ -5,3 +5,9 @@ data/
 node_modules/
 package.json
 package-lock.json
+.backend/ml/data/
+backend/ml/data/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
