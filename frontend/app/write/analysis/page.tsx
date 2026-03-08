@@ -3,7 +3,6 @@ import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import Image from "next/image";
 
 export default function JournalAnalysis() {
   const router = useRouter();
@@ -14,45 +13,75 @@ export default function JournalAnalysis() {
   useEffect(() => {
     // Set current date
     const date = new Date();
-    const options: Intl.DateTimeFormatOptions = { 
-      weekday: 'long', 
-      year: 'numeric', 
-      month: 'long', 
-      day: 'numeric' 
+    const options: Intl.DateTimeFormatOptions = {
+      weekday: "long",
+      year: "numeric",
+      month: "long",
+      day: "numeric",
     };
-    setCurrentDate(date.toLocaleDateString('en-US', options));
+    setCurrentDate(date.toLocaleDateString("en-US", options));
 
-    // Simulate API call/analysis
-    const timer = setTimeout(() => {
-      // Get journal data from localStorage
-      if (typeof window !== "undefined") {
-        const journalText = localStorage.getItem("currentJournalText") || "";
-        const sleepHours = localStorage.getItem("currentSleepHours") || "0";
-        const workHours = localStorage.getItem("currentWorkHours") || "0";
-        
-        // For now, use placeholder data - backend will replace this
-        setAnalysisData({
-          burnoutLevel: "Severe",
-          burnoutProbability: 96,
-          zenSuggestions: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Fusce est leo, ultricies ut nibh vitae, varius vulputate risus. Aliquam porttitor, felis sed congue tincidunt, nulla arcu rutrum dolor, viverra rutrum risus tortor quis augue. Morbi quis odio congue, feugiat tortor sit amet, venenatis nisl. Proin sit amet augue blandit, suscipit risus vel, feugiat quam. Suspendisse ut augue nibh. Aenean eleifend risus semper feugiat mollis. Quisque sit amet purus metus.",
-          subtitle: "Lorem Ipsum Solor Dit",
-          additionalText: "lorem ipsum solor sit"
-        });
-      }
+    if (typeof window === "undefined") {
       setIsLoading(false);
-    }, 2000); // 2 second loading animation
+      return;
+    }
 
-    return () => clearTimeout(timer);
+    const journalText = localStorage.getItem("currentJournalText") || "";
+    const sleepHours = localStorage.getItem("currentSleepHours") || "0";
+    const workHours = localStorage.getItem("currentWorkHours") || "0";
+
+    const apiBase =
+      typeof process !== "undefined" && process.env.NEXT_PUBLIC_API_URL
+        ? process.env.NEXT_PUBLIC_API_URL
+        : "http://localhost:8000";
+
+    fetch(`${apiBase}/analyze`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        text: journalText,
+        sleep_hours: parseFloat(sleepHours) || 0,
+        work_hours_per_day: parseFloat(workHours) || 0,
+      }),
+    })
+      .then((res) => {
+        if (!res.ok) throw new Error("Analysis failed");
+        return res.json();
+      })
+      .then((data) => {
+        setAnalysisData({
+          burnoutLevel: data.burnout_level ?? "Moderate",
+          burnoutProbability: data.burnout_probability ?? 0,
+          zenSuggestions:
+            data.zen_suggestions ??
+            "Take a short break, hydrate, and consider a brief walk or deep breathing.",
+          subtitle: "Based on your journal and habits",
+          additionalText: `Sentiment: ${((data.sentiment_negativity ?? 0) * 100).toFixed(0)}% negative · Final risk: ${((data.final_risk ?? 0) * 100).toFixed(0)}%`,
+        });
+      })
+      .catch(() => {
+        setAnalysisData({
+          burnoutLevel: "—",
+          burnoutProbability: 0,
+          zenSuggestions:
+            "Could not reach the analysis server. Make sure the backend is running (e.g. cd backend && uvicorn main:app --reload).",
+          subtitle: "Connection issue",
+          additionalText: "Check that the backend is running on port 8000.",
+        });
+      })
+      .finally(() => setIsLoading(false));
   }, []);
 
   const handleFinish = () => {
     // Save analysis to localStorage
     if (typeof window !== "undefined" && analysisData) {
-      const existingEntries = JSON.parse(localStorage.getItem("journalEntries") || "[]");
+      const existingEntries = JSON.parse(
+        localStorage.getItem("journalEntries") || "[]",
+      );
       const journalText = localStorage.getItem("currentJournalText") || "";
       const sleepHours = localStorage.getItem("currentSleepHours") || "0";
       const workHours = localStorage.getItem("currentWorkHours") || "0";
-      
+
       const newEntry = {
         text: journalText,
         sleepHours: parseFloat(sleepHours) || 0,
@@ -61,15 +90,15 @@ export default function JournalAnalysis() {
         analysis: analysisData,
         date: currentDate,
       };
-      
+
       existingEntries.push(newEntry);
       localStorage.setItem("journalEntries", JSON.stringify(existingEntries));
-      
+
       // Clear temporary data
       localStorage.removeItem("currentJournalText");
       localStorage.removeItem("currentSleepHours");
       localStorage.removeItem("currentWorkHours");
-      
+
       // Redirect to journal
       router.push("/journal");
     }
@@ -80,7 +109,9 @@ export default function JournalAnalysis() {
       {/* Header */}
       <div className="flex justify-between items-start pt-10 px-10 mb-8">
         <div>
-          <h1 className="text-5xl font-black text-[#4A4E7E] mb-2">your analysis</h1>
+          <h1 className="text-5xl font-black text-[#4A4E7E] mb-2">
+            your analysis
+          </h1>
           <p className="text-lg text-[#4A4E7E] opacity-70">{currentDate}</p>
         </div>
         <Link href="/journal">
@@ -104,7 +135,9 @@ export default function JournalAnalysis() {
                 transition={{ duration: 1, repeat: Infinity, ease: "linear" }}
                 className="w-16 h-16 border-4 border-[#4A4E7E] border-t-transparent rounded-full"
               />
-              <p className="text-xl text-[#4A4E7E] font-medium">analyzing your journal...</p>
+              <p className="text-xl text-[#4A4E7E] font-medium">
+                analyzing your journal...
+              </p>
             </div>
           </motion.div>
         )}
@@ -121,8 +154,12 @@ export default function JournalAnalysis() {
           >
             {/* Left Section - Zen Suggestions */}
             <div className="flex-1 bg-white rounded-3xl p-8 shadow-lg">
-              <h2 className="text-4xl font-black text-[#4A4E7E] mb-2">Zen Suggestions</h2>
-              <p className="text-lg text-[#4A4E7E] opacity-70 mb-6">{analysisData.subtitle}</p>
+              <h2 className="text-4xl font-black text-[#4A4E7E] mb-2">
+                Zen Suggestions
+              </h2>
+              <p className="text-lg text-[#4A4E7E] opacity-70 mb-6">
+                {analysisData.subtitle}
+              </p>
               <p className="text-base text-[#4A4E7E] opacity-80 leading-relaxed">
                 {analysisData.zenSuggestions}
               </p>
@@ -135,7 +172,9 @@ export default function JournalAnalysis() {
                 <h3 className="text-5xl font-black text-[#4A4E7E] mb-2">
                   {analysisData.burnoutLevel}
                 </h3>
-                <p className="text-lg text-[#4A4E7E] opacity-70">Burnout Warning</p>
+                <p className="text-lg text-[#4A4E7E] opacity-70">
+                  Burnout Warning
+                </p>
               </div>
 
               {/* Burnout Probability Panel */}
@@ -144,9 +183,13 @@ export default function JournalAnalysis() {
                   <h3 className="text-5xl font-black text-[#4A4E7E] mb-2">
                     {analysisData.burnoutProbability}%
                   </h3>
-                  <p className="text-lg text-[#4A4E7E] opacity-70 mb-4">Burnout Probability</p>
+                  <p className="text-lg text-[#4A4E7E] opacity-70 mb-4">
+                    Burnout Probability
+                  </p>
                 </div>
-                <p className="text-sm text-[#4A4E7E] opacity-60">{analysisData.additionalText}</p>
+                <p className="text-sm text-[#4A4E7E] opacity-60">
+                  {analysisData.additionalText}
+                </p>
               </div>
             </div>
           </motion.div>
