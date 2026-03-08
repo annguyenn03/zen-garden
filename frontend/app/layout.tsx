@@ -37,8 +37,8 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
 
         {/* MAIN STAGE */}
         <main className="relative flex-1 flex flex-col items-center justify-center overflow-hidden">
-          {/* THE GLOW: Centralized radial gradient */}
-          <div className="absolute inset-0 z-0 bg-[radial-gradient(circle,_rgba(242,193,209,0.3)_0%,_rgba(255,255,255,1)_70%)] pointer-events-none" />
+          {/* Soft glow: light center so it stays readable in light and dark mode */}
+          <div className="absolute inset-0 z-0 bg-[radial-gradient(circle_at_center,_rgba(255,245,250,1)_0%,_rgba(255,255,255,0.98)_50%,_rgba(255,255,255,1)_100%)] pointer-events-none" />
 
           {/* PAGE CONTENT */}
           <div className="relative z-10 w-full h-full flex flex-col">
