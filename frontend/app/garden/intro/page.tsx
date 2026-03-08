@@ -15,7 +15,7 @@ export default function GardenIntro() {
       const seen = localStorage.getItem("hasSeenGarden");
       if (seen === "true") {
         // Already seen, redirect immediately
-        router.push("/journal");
+        router.push("/write");
       } else {
         // First time, show the garden page
         setShouldShow(true);
@@ -32,7 +32,7 @@ export default function GardenIntro() {
     // Mark as seen and redirect after modal closes
     localStorage.setItem("hasSeenGarden", "true");
     setTimeout(() => {
-      router.push("/journal");
+      router.push("/write");
     }, 500);
   };
 

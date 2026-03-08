@@ -26,9 +26,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             <Image src="/small_logo_icon_white.svg" width={50} height={50} alt="Logo" className="mb-4" />
           </Link>
           <nav className="flex flex-col gap-6 items-center">
-             <Link href="/dashboard" className="hover:opacity-100 opacity-70 transition-opacity">
-               <Image src="/icon_dashboard.svg" width={40} height={40} alt="Dashboard" />
-             </Link>
              <Link href="/journal" className="hover:opacity-100 opacity-70 transition-opacity">
                <Image src="/icon_journal.svg" width={40} height={40} alt="Journal" />
              </Link>

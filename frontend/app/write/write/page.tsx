@@ -23,7 +23,7 @@ export default function JournalWrite() {
     // Save journal text temporarily to localStorage
     if (typeof window !== "undefined") {
       localStorage.setItem("currentJournalText", text);
-      router.push("/journal/metadata");
+      router.push("/write/metadata");
     }
   };
 

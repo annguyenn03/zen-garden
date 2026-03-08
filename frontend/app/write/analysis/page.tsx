@@ -70,8 +70,8 @@ export default function JournalAnalysis() {
       localStorage.removeItem("currentSleepHours");
       localStorage.removeItem("currentWorkHours");
       
-      // Redirect to dashboard
-      router.push("/dashboard");
+      // Redirect to journal
+      router.push("/journal");
     }
   };
 
@@ -83,7 +83,7 @@ export default function JournalAnalysis() {
           <h1 className="text-5xl font-black text-[#4A4E7E] mb-2">your analysis</h1>
           <p className="text-lg text-[#4A4E7E] opacity-70">{currentDate}</p>
         </div>
-        <Link href="/dashboard">
+        <Link href="/journal">
           <button className="w-10 h-10 rounded-full bg-[#4A4E7E] text-white flex items-center justify-center hover:bg-[#3b3f66] transition-colors">
             <span className="text-xl font-bold">×</span>
           </button>
@@ -156,7 +156,7 @@ export default function JournalAnalysis() {
       {/* Footer Buttons */}
       {!isLoading && (
         <div className="absolute bottom-10 left-10 right-10 flex justify-between">
-          <Link href="/journal/metadata">
+          <Link href="/write/metadata">
             <button className="bg-[#2D2D2D] text-white text-xl font-bold px-8 py-3 rounded-2xl hover:bg-[#1a1a1a] transition-colors">
               back
             </button>
