@@ -3,3 +3,7 @@ scikit-learn
 fastapi
 uvicorn
 pymongo
+nltk
+joblib
+dotenv
+google-genai

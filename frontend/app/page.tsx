@@ -1,47 +1,55 @@
 "use client";
-import { useState } from "react";
+import Image from "next/image";
+import Link from "next/link";
+import { motion } from "framer-motion";
 
-export default function Home() {
-  const [text, setText] = useState("");
-  const [result, setResult] = useState(null);
-
-  async function analyze() {
-    const res = await fetch("http://127.0.0.1:8000/analyze", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ text }),
-    });
-
-    const data = await res.json();
-    setResult(data);
-  }
-
+export default function LandingPage() {
   return (
-    <div className="p-10 max-w-xl mx-auto">
-      <h1 className="text-3xl font-bold mb-4">ZenMode</h1>
-
-      <textarea
-        className="w-full border p-3 rounded"
-        placeholder="Write your journal entry..."
-        value={text}
-        onChange={(e) => setText(e.target.value)}
-      />
-
-      <button
-        onClick={analyze}
-        className="mt-4 bg-blue-500 text-white px-4 py-2 rounded"
+    <div className="relative w-full h-full flex items-center justify-end pr-10 md:pr-24 overflow-hidden">
+      
+      <motion.div 
+        initial={{ x: -100, opacity: 0 }}
+        animate={{ x: 0, opacity: 1 }}
+        transition={{ duration: 1, ease: "easeOut" }}
+        className="absolute bottom-[-10%] left-[-15%] w-[90%] max-w-[1100px] pointer-events-none"
       >
-        Analyze Stress
-      </button>
+        <Image 
+          src="/mascot_home.svg" 
+          width={1100} 
+          height={1100} 
+          alt="Zen Mascot" 
+          priority 
+          className="object-contain"
+        />
+      </motion.div>
 
-      {result && (
-        <div className="mt-6">
-          <p>Stress Level: {result.stress_level}</p>
-          <p>Score: {result.score}</p>
+      <motion.div 
+        initial={{ x: 50, opacity: 0 }}
+        animate={{ x: 0, opacity: 1 }}
+        transition={{ delay: 0.5, duration: 0.8 }}
+        className="z-10 flex flex-col items-end text-right max-w-lg"
+      >
+        <div className="mb-4">
+          <Image 
+            src="/zen_mode_logo.svg" 
+            width={500} 
+            height={200} 
+            alt="zen garden" 
+            className="select-none"
+          />
         </div>
-      )}
+
+        <p className="text-2xl md:text-3xl text-[#4A4E7E] font-medium mb-12 leading-snug max-w-sm">
+          learn to take care of yourself day by day
+        </p>
+
+        <Link href="/garden/intro">
+          <button className="bg-[#4A4E7E] text-white text-3xl font-bold px-16 py-5 rounded-[2.5rem] shadow-2xl hover:bg-[#3b3f66] hover:scale-105 active:scale-95 transition-all">
+            begin writing
+          </button>
+        </Link>
+      </motion.div>
+      
     </div>
   );
 }
