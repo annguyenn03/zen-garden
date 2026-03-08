@@ -21,32 +21,14 @@ export default function JournalMetadata() {
   }, []);
 
   const handleSubmit = () => {
-    // Save metadata to localStorage
+    // Save metadata temporarily to localStorage
     if (typeof window !== "undefined") {
-      const metadata = {
-        sleepHours: parseFloat(sleepHours) || 0,
-        workHours: parseFloat(workHours) || 0,
-        timestamp: new Date().toISOString(),
-      };
+      // Store sleep and work hours temporarily for analysis page
+      localStorage.setItem("currentSleepHours", sleepHours);
+      localStorage.setItem("currentWorkHours", workHours);
       
-      // Get existing journal entries or create new array
-      const existingEntries = JSON.parse(localStorage.getItem("journalEntries") || "[]");
-      const journalText = localStorage.getItem("currentJournalText") || "";
-      
-      // Add the new entry with metadata
-      const newEntry = {
-        text: journalText,
-        ...metadata,
-      };
-      
-      existingEntries.push(newEntry);
-      localStorage.setItem("journalEntries", JSON.stringify(existingEntries));
-      
-      // Clear current journal text
-      localStorage.removeItem("currentJournalText");
-      
-      // Redirect to dashboard or garden
-      router.push("/dashboard");
+      // Redirect to analysis page
+      router.push("/journal/analysis");
     }
   };
 
@@ -111,7 +93,7 @@ export default function JournalMetadata() {
           disabled={!sleepHours && !workHours}
           className="bg-[#4A4E7E] text-white text-3xl font-bold px-16 py-5 rounded-[2.5rem] shadow-2xl hover:bg-[#3b3f66] hover:scale-105 active:scale-95 transition-all disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
         >
-          finish
+          next
         </button>
       </div>
     </motion.div>
