@@ -69,7 +69,7 @@ def burnout_level_from_risk(risk: float) -> str:
     return "Severe"
 
 ######## Connect with Gemini API for Zen Suggestion ########
-api_key = os.environ.get("GOOGLE_API_KEY") or os.environ.get("GEMINI_API_KEY")
+api_key = os.environ.get("GOOGLE_API_KEY")
 client = genai.Client(api_key=api_key) if api_key else None
 
 ######## Endpoints ########
@@ -110,7 +110,7 @@ User Data:
 - Burnout Probability: {burnout_probability}%
 - Sleep Hours (last night): {entry.sleep_hours}
 - Work Hours Per Day: {entry.work_hours_per_day}
-- Journal Entry: "{entry.text[:500]}"
+- Journal Entry: "{entry.text}"
 
 Instructions:
 1. Analyze the emotional tone of the journal entry and the burnout metrics.
