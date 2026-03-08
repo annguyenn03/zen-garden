@@ -1,8 +1,11 @@
 "use client";
 import { useState, useEffect } from "react";
 import { motion } from "framer-motion";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 export default function JournalWrite() {
+  const router = useRouter();
   const [name, setName] = useState("");
   const [text, setText] = useState("");
 
@@ -15,6 +18,14 @@ export default function JournalWrite() {
       }
     }
   }, []);
+
+  const handleNext = () => {
+    // Save journal text temporarily to localStorage
+    if (typeof window !== "undefined") {
+      localStorage.setItem("currentJournalText", text);
+      router.push("/journal/metadata");
+    }
+  };
 
   return (
     <motion.div 
@@ -36,6 +47,16 @@ export default function JournalWrite() {
           placeholder="write your thoughts here..."
           className="w-full h-64 bg-transparent border-none text-2xl text-[#4A4E7E] focus:outline-none resize-none placeholder-[#4A4E7E]/20"
         />
+      </div>
+
+      {/* Navigation Button */}
+      <div className="absolute bottom-10 right-10">
+        <button
+          onClick={handleNext}
+          className="bg-[#4A4E7E] text-white text-3xl font-bold px-16 py-5 rounded-[2.5rem] shadow-2xl hover:bg-[#3b3f66] hover:scale-105 active:scale-95 transition-all"
+        >
+          next
+        </button>
       </div>
     </motion.div>
   );
