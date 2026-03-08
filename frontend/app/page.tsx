@@ -43,7 +43,7 @@ export default function LandingPage() {
           learn to take care of yourself day by day
         </p>
 
-        <Link href="/garden">
+        <Link href="/garden/intro">
           <button className="bg-[#4A4E7E] text-white text-3xl font-bold px-16 py-5 rounded-[2.5rem] shadow-2xl hover:bg-[#3b3f66] hover:scale-105 active:scale-95 transition-all">
             begin writing
           </button>
