@@ -1,3 +1,7 @@
+#########################################################
+# To train the sentiment model: python sentiment_training.py
+#########################################################
+
 import pandas as pd
 from zipfile import ZipFile
 import re

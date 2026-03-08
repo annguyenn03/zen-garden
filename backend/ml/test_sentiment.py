@@ -1,7 +1,10 @@
+#########################################################
+# To run the test file: python test_sentiment.py
+#########################################################
+
 from pathlib import Path
 import joblib
-
-from training import preprocess_text
+from backend.ml.sentiment_training import preprocess_text
 
 # Load artifacts (same paths as in training.py)
 MODELS_DIR = Path(__file__).resolve().parent / "models"
