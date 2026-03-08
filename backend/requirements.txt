@@ -5,3 +5,5 @@ uvicorn
 pymongo
 nltk
 joblib
+dotenv
+google-genai
