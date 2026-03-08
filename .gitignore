@@ -1,4 +1,4 @@
 .backend/venv/
 backend/venv/
-.data/
-data/
+.backend/ml/data/
+backend/ml/data/
